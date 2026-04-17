@@ -1,7 +1,13 @@
-Hi guys!
-I created a simple desktop to-do list app called BusyBee!
-This app allows users to add, delete, prioritise and pend tasks!
-This also come with a super cool pie chart which tracks your progress.
+# BusyBee 🐝
+
+BusyBee is a desktop productivity application designed to help users efficiently manage their daily tasks.
+Focusing on simplicity and usability, BusyBee allows users to organise, prioritise, and track their progress in a clean and interactive interface.
+
+Its tech stack include:
+- **PyQt5** for building the desktop Graphic User Interface
+- **Matplotlib** for graphical task progress visualisation
+- **JSON** for lightweight data persistence
+- **PyInstaller** for packaging the application into an executable
 
 <img src="Screenshot 2026-02-28 194047.png" width="400" height="200">
 
