@@ -161,23 +161,23 @@ class Main(QWidget):
                 tasks = json.load(f) # Load JSON data into Python list
                 self.task_list.addItems(tasks)  # Fill task list in UI
 
-    # -----------------------
     # PIE CHART
-    # -----------------------
-    def update_pie_chart(self):
-        tasks = [self.task_list.item(i).text() for i in range(self.task_list.count())]
-        priority = sum(1 for t in tasks if t.startswith("⭐ "))
+    def update_pie_chart(self): # Updates the pie chart based on current task states
+        tasks = [self.task_list.item(i).text() for i in range(self.task_list.count())] # Extract all task text from the list widget into a Python list
+        priority = sum(1 for t in tasks if t.startswith("⭐ ")) # Count number of tasks in each category with emojis
         pending = sum(1 for t in tasks if t.startswith("⏳ "))
         completed = sum(1 for t in tasks if t.startswith("✅ "))
-        none = len(tasks) - priority - pending - completed
+        none = len(tasks) - priority - pending - completed # Tasks with no status (no emoji)
 
-        self.figure.clear()
-        ax = self.figure.add_subplot(111)
-
-        labels = []
-        sizes = []
-        colors = []
-
+        self.figure.clear() # Clear previous chart to redraw updated data
+        ax = self.figure.add_subplot(111) # Create a new subplot
+       
+        # Lists to store pie chart data
+        labels = [] # Category names
+        sizes = [] # Number of tasks in each category
+        colors = [] # Colour for each category
+        
+        # Add data only if category exists
         if priority:
             labels.append("Priority")
             sizes.append(priority)
@@ -195,20 +195,19 @@ class Main(QWidget):
             sizes.append(none)
             colors.append("#A9A9A9")  # grey
 
+        # If there are no tasks at all
         if not sizes:  # No tasks at all
-            # Draw a blank grey circle
+            # # Draw a blank placeholder circle
             ax.pie([1], colors=['#f0f0f0'])
-        else:
+        else: # Create pie chart with labels, percentages, and styling
             ax.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=90, colors=colors)
         
-        ax.axis('equal')
-        self.canvas.draw()
+        ax.axis('equal') # Ensure pie chart is circular
+        self.canvas.draw() # Refresh canvas to display updated chart
 
 
-# =========================
 # RUN APP
-# =========================
-app = QApplication(sys.argv)
-window = Main()
-window.show()
-sys.exit(app.exec_())
+app = QApplication(sys.argv) # Create application instance
+window = Main() # Initialize main window class
+window.show() # Display the window on screen
+sys.exit(app.exec_()) # Keeps the app running until closed
