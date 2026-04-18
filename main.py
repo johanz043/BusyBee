@@ -40,20 +40,22 @@ class Main(QWidget):
 
         # Creates input box to add tasks
         self.input_box = QLineEdit()
-        self.input_box.setPlaceholderText("Enter task...")
-        self.input_box.returnPressed.connect(self.add_task)
-        add_task_layout.addWidget(self.input_box)
+        self.input_box.setPlaceholderText("Enter task...") # Text input field for user to type tasks
+        self.input_box.returnPressed.connect(self.add_task) # Placeholder text
+        add_task_layout.addWidget(self.input_box) # Add input box to add_task_layout
 
         # BUTTONS
-        pending_btn = QPushButton("Pending")
-        pending_btn.clicked.connect(self.toggle_pending)
-        pending_btn.setStyleSheet("background-color: #1E90FF; color: white; font-weight: bold;")
-        buttons_layout.addWidget(pending_btn)
 
-        priority_btn = QPushButton("Priority")
-        priority_btn.clicked.connect(self.toggle_priority)
+        
+        pending_btn = QPushButton("Pending") # Create button labeled "Pending"
+        pending_btn.clicked.connect(self.toggle_pending) # On click, call toggle_pending()
+        pending_btn.setStyleSheet("background-color: #1E90FF; color: white; font-weight: bold;")
+        buttons_layout.addWidget(pending_btn) # Add button to buttons_layout
+
+        priority_btn = QPushButton("Priority")  # Create "Priority" button
+        priority_btn.clicked.connect(self.toggle_priority) # Connect to toggle_priority()
         priority_btn.setStyleSheet("background-color: #FFD700; color: black; font-weight: bold;")
-        buttons_layout.addWidget(priority_btn)
+        buttons_layout.addWidget(priority_btn) # Add to buttons_layout
 
         completed_btn = QPushButton("Completed")
         completed_btn.clicked.connect(self.toggle_completed)
@@ -65,10 +67,10 @@ class Main(QWidget):
         delete_btn.setStyleSheet("background-color: #FF4500; color: white; font-weight: bold;")
         buttons_layout.addWidget(delete_btn)
 
-        add_btn = QPushButton("Add Task")
-        add_btn.clicked.connect(self.add_task)
+        add_btn = QPushButton("Add Task") # Create "Add Task" button
+        add_btn.clicked.connect(self.add_task) # Connect to add_task()
         add_btn.setStyleSheet("background-color: #FFA500; color: white; font-weight: bold;")
-        add_task_layout.addWidget(add_btn)
+        add_task_layout.addWidget(add_btn) # Add next to input box in add_task_layout
 
         # TASK LIST
         self.task_list = QListWidget()
