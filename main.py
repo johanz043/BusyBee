@@ -92,76 +92,74 @@ class Main(QWidget):
         self.update_pie_chart()
 
     # FUNCTIONS
-    def add_task(self):
-        text = self.input_box.text().strip()
-        if text:
-            self.task_list.addItem(text)
-            self.input_box.clear()
-            self.save_tasks()
-            self.update_pie_chart()
+    def add_task(self):# Function to add a new task to the list
+        text = self.input_box.text().strip() # Get input text
+        if text: # Ensure input is not empty
+            self.task_list.addItem(text) # Add task to the list widget
+            self.input_box.clear() # Clear input field after adding
+            self.save_tasks() # Save updated task list to file
+            self.update_pie_chart() # Refresh chart to show new task
 
-    def delete_task(self):
-        row = self.task_list.currentRow()
-        if row >= 0:
-            self.task_list.takeItem(row)
-            self.save_tasks()
-            self.update_pie_chart()
+    def delete_task(self): # Function to delete a selected task
+        row = self.task_list.currentRow() # Get index of currently selected task
+        if row >= 0: # Check if the selected item exists
+            self.task_list.takeItem(row) # Remove task from the list
+            self.save_tasks() # Save updated list
+            self.update_pie_chart() # Update chart
 
-    def toggle_priority(self):
+    def toggle_priority(self): # Function to toggle "priority" status
+        item = self.task_list.currentItem() # Get currently selected task
+        if item: # Ensure a task is selected
+            text = item.text() # Get task text
+            text = text.replace("⏳ ", "").replace("✅ ", "") # Remove other status emojis
+            # Toggle priority status
+            if text.startswith("⭐ "): # If already marked as priority
+                text = text[2:]  # Unmark it (deprioritise)
+            else: # If not prioritised
+                text = "⭐ " + text # Add the emoji to prioritise
+            item.setText(text) # Update task text in UI
+            self.save_tasks() # Save changes to the file
+            self.update_pie_chart() # Update chart
+
+    def toggle_pending(self): # Function to toggle "pending" status
+        # Its basically the same as toggle_priority
         item = self.task_list.currentItem()
         if item:
-            text = item.text()
-            # Remove other status emojis
-            text = text.replace("⏳ ", "").replace("✅ ", "")
-            if text.startswith("⭐ "):
-                text = text[2:]  # remove star if already priority
-            else:
-                text = "⭐ " + text
-            item.setText(text)
-            self.save_tasks()
-            self.update_pie_chart()
-
-    def toggle_pending(self):
-        item = self.task_list.currentItem()
-        if item:
-            text = item.text()
-            # Remove other status emojis
+            text = item.text()s
             text = text.replace("⭐ ", "").replace("✅ ", "")
             if text.startswith("⏳ "):
-                text = text[2:]  # remove pending if already pending
+                text = text[2:]  
             else:
                 text = "⏳ " + text
             item.setText(text)
             self.save_tasks()
             self.update_pie_chart()
 
-    def toggle_completed(self):
+    def toggle_completed(self): # Function to toggle "completed" status
+        # The same as the previous two
         item = self.task_list.currentItem()
         if item:
             text = item.text()
-            # Remove other status emojis
             text = text.replace("⭐ ", "").replace("⏳ ", "")
             if text.startswith("✅ "):
-                text = text[2:]  # unmark completed if already done
+                text = text[2:] 
             else:
                 text = "✅ " + text
             item.setText(text)
             self.save_tasks()
             self.update_pie_chart()
 
-    # -----------------------
-    # SAVE / LOAD
-    # -----------------------
-    def save_tasks(self):
-        tasks = [self.task_list.item(i).text() for i in range(self.task_list.count())]
-        with open(FILE, "w") as f:
+    # SAVING AND LOADING
+    def save_tasks(self): # Save all tasks to a JSON file
+        tasks = [self.task_list.item(i).text() for i in range(self.task_list.count())] # Convert QListWidget items into a Python list
+        with open(FILE, "w") as f: # Open file in write mode and save tasks as JSON
             json.dump(tasks, f, indent=4)
 
-    def load_tasks(self):
-        if os.path.exists(FILE):
-            with open(FILE) as f:
-                tasks = json.load(f)
-                self.task_list.addItems(tasks)
+    def load_tasks(self):  # Load tasks from JSON file
+        if os.path.exists(FILE): # Check if file exists
+            with open(FILE) as f: # Open file in read mode
+                tasks = json.load(f) # Load JSON data into Python list
+                self.task_list.addItems(tasks)  # Fill task list in UI
 
     # -----------------------
     # PIE CHART
