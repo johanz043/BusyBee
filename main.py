@@ -45,8 +45,6 @@ class Main(QWidget):
         add_task_layout.addWidget(self.input_box) # Add input box to add_task_layout
 
         # BUTTONS
-
-        
         pending_btn = QPushButton("Pending") # Create button labeled "Pending"
         pending_btn.clicked.connect(self.toggle_pending) # On click, call toggle_pending()
         pending_btn.setStyleSheet("background-color: #1E90FF; color: white; font-weight: bold;")
@@ -73,35 +71,27 @@ class Main(QWidget):
         add_task_layout.addWidget(add_btn) # Add next to input box in add_task_layout
 
         # TASK LIST
-        self.task_list = QListWidget()
-        task_list_layout.addWidget(self.task_list)
+        self.task_list = QListWidget() # Create list widget to display tasks
+        task_list_layout.addWidget(self.task_list) # Add list to task_list_layout
 
-        # =========================
         # RIGHT PANEL PIE CHART
-        # =========================
-        right_panel = QVBoxLayout()
-        self.figure = Figure(figsize=(4,4))
-        self.canvas = FigureCanvas(self.figure)
-        right_panel.addWidget(self.canvas)
+        right_panel = QVBoxLayout() # Layout for right side (chart)
+        self.figure = Figure(figsize=(4,4)) # Create matplotlib figure (size 4x4)
+        self.canvas = FigureCanvas(self.figure) # Convert figure into a widget for PyQt5
+        right_panel.addWidget(self.canvas) # Add chart canvas to layout
 
-        # =========================
-        # SPLIT PAGE
-        # =========================
-        page_layout_without_title.addLayout(task_manipulation_layout, 2)
-        page_layout_without_title.addLayout(right_panel, 1)
-        page_layout.addLayout(page_layout_without_title)
+        # SPLITTING THE PAGE
+        page_layout_without_title.addLayout(task_manipulation_layout, 2) # The task_manipulation layout goes into page_layout_without_title on the left taking up more space 
+        page_layout_without_title.addLayout(right_panel, 1) # right_panel fits into page_layout_without_title on the right
+        page_layout.addLayout(page_layout_without_title) # Add both panels below title
 
-        self.setLayout(page_layout)
+        self.setLayout(page_layout) # Apply main layout to window
 
-        # =========================
-        # LOAD TASKS
-        # =========================
-        self.load_tasks()
+        # LOADING TASKS
+        self.load_tasks() # Load tasks from JSON file (if exists)
         self.update_pie_chart()
 
-    # -----------------------
-    # TASK FUNCTIONS
-    # -----------------------
+    # FUNCTIONS
     def add_task(self):
         text = self.input_box.text().strip()
         if text:
