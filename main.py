@@ -1,45 +1,44 @@
-import sys, json, os
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import (
+import sys, json, os # Import core Python libraries
+from PyQt5.QtCore import Qt # Import PyQt5 core functionality
+from PyQt5.QtWidgets import ( # Import PyQt5 widgets for building the GUI
     QApplication, QWidget, QVBoxLayout, QHBoxLayout,
     QListWidget, QPushButton, QLineEdit, QLabel
 )
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas # Import Matplotlib components to embed charts
 from matplotlib.figure import Figure
 
-FILE = "tasks.json"
+FILE = "tasks.json" # File used for storing tasks
 
+# Main application window
 class Main(QWidget):
     def __init__(self):
         super().__init__()
 
+        # Set window title and size
         self.setWindowTitle("BusyBee 🐝")
         self.resize(800, 600)
 
         # Layout containers
-        page_layout = QVBoxLayout()
-        page_layout_without_title = QHBoxLayout()
-        task_manipulation_layout = QVBoxLayout()
-        add_task_layout = QHBoxLayout()
-        task_list_layout = QVBoxLayout()
-        buttons_layout = QHBoxLayout()
+        page_layout = QVBoxLayout() # Main vertical layout (entire page, splits between the title and the rest of the program)
+        page_layout_without_title = QHBoxLayout() # Layout below the title (splits between the graph and the task section)
+        task_manipulation_layout = QVBoxLayout() # The left side of page_layout_without_title spitting task controls
+        # Sub layouts
+        add_task_layout = QHBoxLayout() # input + add button
+        task_list_layout = QVBoxLayout() # task list display
+        buttons_layout = QHBoxLayout() # action buttons
 
-        # =========================
         # TITLE
-        # =========================
         title = QLabel("BusyBee 🐝")
         title.setAlignment(Qt.AlignCenter)
         title.setStyleSheet("font-size: 22px; font-weight: bold;")
         page_layout.addWidget(title)
 
-        # =========================
-        # TASK PANEL LEFT
-        # =========================
-        task_manipulation_layout.addLayout(add_task_layout)
-        task_manipulation_layout.addLayout(task_list_layout)
+        # TASKS LAYOUT (Left Panel)
+        task_manipulation_layout.addLayout(add_task_layout) # Puts all the sub layouts inside task_manipulation_layout
+        task_manipulation_layout.addLayout(task_list_layout) 
         task_manipulation_layout.addLayout(buttons_layout)
 
-        # INPUT
+        # Creates input box to add tasks
         self.input_box = QLineEdit()
         self.input_box.setPlaceholderText("Enter task...")
         self.input_box.returnPressed.connect(self.add_task)
